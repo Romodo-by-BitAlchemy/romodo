@@ -1,2 +1,2 @@
 # romodo
-Backend hosted on AWS EC2
+Backend hosted on GCP N2D (Ubuntu LTS)
