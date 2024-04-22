@@ -1,4 +1,6 @@
-node_modules
+
 
 snyk-linux
 downloads*
+
+node_modules
