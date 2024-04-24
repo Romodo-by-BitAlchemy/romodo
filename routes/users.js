@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-/*
+
 // Authenticate user
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -106,6 +106,6 @@ router.get("/logout", (req, res) => {
   return res.json({status: true, message: "User logged out successfully"});
 });
 
-*/
+
 
 module.exports = router;
