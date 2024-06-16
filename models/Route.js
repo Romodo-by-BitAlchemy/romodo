@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const Destination = require("./Destination");
+const LocationSchema = require("./Location");
 
 // Defining Routes schema
 const RouteSchema = new mongoose.Schema({
@@ -18,7 +20,6 @@ const RouteSchema = new mongoose.Schema({
 	},
 	endTime: {
 		type: String, // ISO 8601 format: "HH:MM:SS"
-		required: false,
 		validate: {
 			validator: function (v) {
 				return timeFormat.test(v);
@@ -30,8 +31,8 @@ const RouteSchema = new mongoose.Schema({
 		type: LocationSchema,
 		required: true,
 	},
-	endLocation: {
-		type: LocationSchema,
+	destinations: {
+		type: [Destination],
 		required: true,
 	},
 });
