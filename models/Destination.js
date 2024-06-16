@@ -1,25 +1,21 @@
 const mongoose = require("mongoose");
-
-const LocationSchema = new mongoose.Schema({
-	//GeoJSON Point
-	type: {
-		type: String,
-		enum: ["Point"],
-		required: true,
-	},
-	coordinates: {
-		type: [Number],
-		required: true,
-	},
-});
+const Passenger = require("./Passenger");
 
 const DestinationSchema = new mongoose.Schema({
 	destinationName: {
 		type: String,
 		required: true,
 	},
-	location: {
-		type: LocationSchema,
+	placeId: {
+		type: String,
+		required: true,
+	},
+	passenger: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: Passenger,
 		required: true,
 	},
 });
+
+const Destination = mongoose.model("Destination", DestinationSchema);
+module.exports = Destination;
