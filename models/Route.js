@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Destination = require("./Destination");
-const LocationSchema = require("./Location");
 
 // Defining Routes schema
 /**
@@ -38,8 +37,8 @@ const RouteSchema = new mongoose.Schema({
 			message: (props) => `${props.value} is not a valid time format!`,
 		},
 	},
-	startLocation: {
-		type: LocationSchema,
+	startPlaceId: {
+		type: String,
 		required: true,
 	},
 	destinations: {
