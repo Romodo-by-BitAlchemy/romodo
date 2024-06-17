@@ -301,6 +301,13 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@google-cloud/optimization@^3.5.0":
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/@google-cloud/optimization/-/optimization-3.5.0.tgz#a500c4f5d14f452129957a0295206a67b67c0ed8"
+  integrity sha512-brzAAIVv4YGsP03hUITcI3tu/qo+ahaWCh9ko4HxSUn3kLGa/VRfzKcI6rNYBXBPR6Tzx3fG70O8ZZ6Bauap6A==
+  dependencies:
+    google-gax "^4.0.3"
+
 "@googlemaps/routeoptimization@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@googlemaps/routeoptimization/-/routeoptimization-0.1.0.tgz#8147a69d77376543e60cd09d27c9e17c7a1d8b8a"
