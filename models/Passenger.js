@@ -11,7 +11,6 @@ const mongoose = require("mongoose");
  * @property {string} gender - The gender of the passenger.
  * @property {Date} dateOfBirth - The date of birth of the passenger.
  * @property {string} contactNo - The contact number of the passenger.
- * @property {string} serviceNo - The service number of the passenger.
  * @property {boolean} isInternal - Indicates if the passenger is internal.
  * @property {string} companyName - The company name of the passenger (required if isInternal is true).
  */
@@ -23,7 +22,6 @@ const PassengerSchema = new mongoose.Schema({
 	gender: { type: String, required: true },
 	dateOfBirth: { type: Date, required: true },
 	contactNo: { type: String, required: true },
-	// serviceNo: { type: String, required: true },
 	isInternal: { type: Boolean, required: true },
 	companyName: {
 		type: String,
