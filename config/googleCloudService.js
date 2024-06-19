@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { execSync } = require("child_process");
+const { send } = require("process");
 
 const exampleRequest = {
 	parent: "projects/romodo-fleets",
@@ -133,23 +134,17 @@ class GoogleCloudService {
 		};
 	}
 
-	makePostRequest() {
-		// Make the POST request with Axios
-		axios
-			.post(
+	async makePostRequest(incomingRequest) {
+		try {
+			const response = await axios.post(
 				"https://cloudoptimization.googleapis.com/v1/projects/romodo-fleets:optimizeTours",
-				this.requestData,
+				incomingRequest || this.requestData,
 				{ headers: this.headers }
-			)
-			.then((response) => {
-				console.log("Response:", response.data);
-			})
-			.catch((error) => {
-				console.error(
-					"Error:",
-					error.response ? error.response.data : error.message
-				);
-			});
+			);
+			return response.data;
+		} catch (error) {
+			throw error.response ? error.response.data : error.message;
+		}
 	}
 }
 
