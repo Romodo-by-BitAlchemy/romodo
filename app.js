@@ -2,12 +2,14 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
+
 var logger = require("morgan");
 const cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var fleetRoutingRoutes = require("./routes/fleetRouting");
+
 
 var app = express();
 
@@ -25,6 +27,7 @@ app.use("/users", usersRouter);
 app.use("/api/fleet", fleetRoutingRoutes);
 
 const PORT = process.env.PORT || 3000;
+
 
 // Start the server and keep it running
 app.listen(PORT, function () {
