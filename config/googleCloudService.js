@@ -131,9 +131,6 @@ class GoogleCloudService {
 			"x-goog-user-project": "romodo-fleets",
 			"Content-Type": "application/json; charset=utf-8",
 		};
-
-		// Call the method to make the POST request
-		this.makePostRequest();
 	}
 
 	makePostRequest() {
