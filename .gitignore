@@ -16,3 +16,6 @@ lerna-debug.log*
 dist/
 dist-ssr/
 *.local/
+
+snyk-linux
+/downloads*
