@@ -105,6 +105,7 @@ const Trip = mongoose.model("Trip", TripsSchema);
 const Payment = mongoose.model("Payment", PaymentsSchema);
 const Vehicle = mongoose.model("Vehicle", VehiclesSchema);
 const Issue = mongoose.model("Issue", IssuesSchema);
+const User = mongoose.model("User", UserSchema);
 
 // Listening on port 3000
 app.listen(3000, () => {
