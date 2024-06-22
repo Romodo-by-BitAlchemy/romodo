@@ -5,8 +5,8 @@ const {StandardResponse} = require("../dto/StandardResponse");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const { User } = require("../types/SchemaTypes");
-const UserModel = require("../model/user.model");
+const { User } = require("../models/SchemaTypes");
+const UserModel = require("../models/User");
 //const router = express.Router();
 
 // Route for user registration
@@ -31,29 +31,6 @@ exports.signup = tryCatch(async (req, res) => {
 });
 
 
-// Route for user login
-/*exports.login = tryCatch(async (req, res) => {
-    const { username, password } = req.body;
-    
-    const user = await UserModel.findOne({ username });
-    if (!user) {
-        return res.status(400).json({ message: "User is not registered" });
-    }
-    
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-        return res.status(400).json({ message: "Invalid password" });
-    }
-    
-    /*const token = jwt.sign({ username: user.username }, process.env.KEY, {
-        expiresIn: "24h",
-    });
-    
-    res.cookie("token", token, { httpOnly: true, maxAge: 360000 });// becouse of cors error do this
-    return res
-        .status(200)
-        .json({ status: true, message: "User logged in successfully" });
-});*/
 
 exports.login = tryCatch(async (req, res) => {
     const { username, password } = req.body;

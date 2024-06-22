@@ -1,7 +1,7 @@
 const tryCatch = require("../utils/TryCatch");
 const { Request, Response } = require("express");
 const { StandardResponse } = require("../dto/StandardResponse");
-const VehicleModel = require("../models/vehicle.model");
+const VehicleModel = require("../models/Vehicle");
 const { Vehicle } = require("../models/SchemaTypes");
 
 /**
@@ -37,22 +37,7 @@ exports.getVehicle = tryCatch(async (req, res) => {
     res.status(200).send(response);
 });
 
-/**
- * Update a vehicle
- */
-/*exports.updateVehicle = tryCatch(async (req, res) => {
-    const vehicleId = req.params.id;
 
-    const vehicle = await VehicleModel.findOne({ _id: vehicleId });
-    if (!vehicle) {
-        const errorResponse = { statusCode: 404, msg: `${req.params.id} Vehicle not found!` };
-        return res.status(404).send(errorResponse);
-    }
-    await VehicleModel.findOneAndUpdate({ _id: vehicleId }, req.body);
-    res.status(204).send();
-    
-
-});*/
 
 exports.updateVehicle = tryCatch(async (req, res) => {
     const vehicleId = req.params.id;

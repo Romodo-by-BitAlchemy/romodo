@@ -1,10 +1,12 @@
 const tryCatch = require("../utils/TryCatch");
 const { Request, Response } = require("express");
 const { StandardResponse } = require("../dto/StandardResponse");
-const { Driver } = require("../types/SchemaTypes");
-const DriverModel = require("../model/driver.model");
+const { Driver } = require("../models/SchemaTypes");
+const DriverModel = require("../models/Driver");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const validator = require('validator');
 const sendEmail = require("../utils/sendEmail");
 
@@ -139,3 +141,123 @@ exports.deleteDriver = tryCatch(async (req, res) => {
 
     res.status(204).send();
 });
+
+
+
+exports.login = tryCatch(async (req, res) => {
+  const { username, password } = req.body;
+
+    const driver = await DriverModel.findOne({ username});
+    console.log(driver);
+
+    if (!driver) {
+      return res.status(400).json({ error: 'User not registered.' });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, driver.password);
+    if (!isPasswordValid) {
+        return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    const token = jwt.sign({ username: driver.username }, process.env.KEY, { expiresIn: '3h' ,});
+   
+    res.cookie("token", token, { httpOnly: true, maxAge: 360000 });
+
+    return res.status(200).json({ status: true, message: 'Logged in successfully' , token: token, data: driver});
+  
+});
+
+
+
+exports.forgotPassword = tryCatch(async (req, res) => {
+  const { email } = req.body;
+
+  
+    const driver = await DriverModel.findOne({ email });
+    if (!driver) {
+      return res.status(400).json({ message: 'Passenger not registered.' });
+    }
+
+    const token = jwt.sign({ username: driver.username }, process.env.KEY, { expiresIn: '25m', });
+
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "rajasooriyakavindhya@gmail.com",
+            pass: "necv biwv lruw dvpy",
+        },
+    });
+    
+    const mailOptions = {
+        from: "rajasooriyakavindhya@gmail.com",
+        to: email,
+        subject: "Reset Password",
+        text: `http://127.0.0.1:5173/rpassword/${token}` // problem in path
+        
+
+    };
+    
+    transporter.sendMail(mailOptions, function (error) {
+        if (error) {
+            return res.status(401).json({ message: "Email not sent" });
+        } else {
+            return res.status(200).json({ status: true, message: "Email sent" });
+        }
+    });
+
+    
+  
+});
+
+
+exports.resetPassword = tryCatch(async (req, res) => {
+  const {token} = req.params;
+  const { password } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.KEY);
+    const id = decoded.id;
+    const hashPassword = await bcrypt.hash(password, 10);
+    
+    await DriverModel.findByIdAndUpdate(id, { password: hashPassword });
+    
+    return res.status(200).json({ status: true, message: "Password reset successfully" });
+} catch (err) {
+    console.log(err);
+    return res.json({ message: "Password reset failed" });
+}
+});
+
+exports.verify = tryCatch(async (req, res) => {
+    return res.json({ status: true, message: "User is verified" });
+});
+
+
+exports.logout = tryCatch(async(req, res) => {
+    res.clearCookie('token');
+    return res.status(204).json({ status: true, message: 'Logged out successfully.' });
+});
+
+
+
+
+// Get Passenger by ID
+exports.getDriverByEmail = tryCatch(async (req, res) => {
+  const { email } = req.params;
+  console.log(`Received request to fetch passenger by email: ${email}`);
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).json({ error: 'Invalid email format' });
+  }
+
+  const driver = await DriverModel.findOne({ email });
+  console.log(`Driver: ${driver}`);
+  if (!driver) {
+    const errorResponse = { statusCode: 400, msg: `Passenger with email ${email} not found!` };
+    return res.status(404).json(errorResponse);
+  }
+
+  const response = { statusCode: 200, msg: "OK", data: driver };
+  res.status(200).send(response);
+});
+
