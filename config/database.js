@@ -1,4 +1,14 @@
-const mongoose = require("mongoose");
+const { MongoClient, ServerApiVersion } = require("mongodb");
+
+const uri = process.env.MONGODB_CONN_STRING;
+
+const client = new MongoClient(uri, {
+	serverApi: {
+		version: ServerApiVersion.v1,
+		strict: true,
+		deprecationErrors: true,
+	},
+});
 
 /**
  * Connects to the MongoDB database.
@@ -6,15 +16,16 @@ const mongoose = require("mongoose");
  */
 const connectDB = async () => {
 	try {
-		await mongoose.connect("mongodb://localhost:27017/ProjectDB", {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
+		await client.connect();
+		await client.db("admin").command({ ping: 1 });
 		console.log("Successfully connected to the database");
 	} catch (error) {
 		console.error("Error connecting to the database:", error);
 		process.exit(1);
+	} finally {
+		await client.close();
 	}
 };
 
 module.exports = connectDB;
+connectDB();

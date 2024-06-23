@@ -1,26 +1,43 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var bodyParser = require("body-parser");
+
+var loggerMorgan = require("morgan");
+const cors = require("cors");
+
+var indexRouter = require("./routes/index");
+var fleetRoutingRoutes = require("./routes/fleetRouting");
+var loggerWinston = require("./utils/logger");
+
 var vehicleRouter = require("./routes/vehicle");
 var driverRoute = require("./routes/driver");
 var userRoute = require("./routes/user");
 var passengerRoute = require("./routes/passenger");
 var errorHandler = require("./middlewares/ErrorHandler");
-var indexRouter = require('./routes/index');
 
 var app = express();
 
-app.use(logger('dev'));
+app.use(cors({ origin: "*" }));
+
+app.use(loggerMorgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "public")));
 
 
 
 app.use(express.json());
 app.use(cookieParser());
+
+app.use("/", indexRouter);
+app.use("/users", usersRouter);
+app.use("/api/fleet", fleetRoutingRoutes);
+
+const PORT = process.env.PORT || 3000;
+
 
 app.use('/', indexRouter);
 app.use("/api/v1/vehicle", vehicleRouter);
