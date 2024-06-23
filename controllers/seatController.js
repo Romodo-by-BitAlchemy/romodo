@@ -1,4 +1,4 @@
-const Seat = require("../models/seat");
+const Seat = require("../models/Seat");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.selectSeat = async (req, res) => {

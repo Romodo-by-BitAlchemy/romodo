@@ -1,7 +1,11 @@
 const { Router } = require("express");
 const {
-    deleteVehicle, getVehicle, createVehicle, getAllVehicles, updateVehicle
-} = require("../controller/vehilce.controller");
+	deleteVehicle,
+	getVehicle,
+	createVehicle,
+	getAllVehicles,
+	updateVehicle,
+} = require("../controllers/vehicleController");
 
 const router = Router();
 
