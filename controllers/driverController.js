@@ -1,4 +1,4 @@
-const tryCatch = require("../utils/TryCatch");
+const tryCatch = require("../utils/tryCatch");
 const { Request, Response } = require("express");
 const { StandardResponse } = require("../dto/StandardResponse");
 const DriverModel = require("../models/Driver");
@@ -135,13 +135,11 @@ exports.updateDriver = tryCatch(async (req, res) => {
 			)}`
 		);
 
-		return res
-			.status(200)
-			.json({
-				status: true,
-				message: "Driver updated successfully",
-				data: driver,
-			});
+		return res.status(200).json({
+			status: true,
+			message: "Driver updated successfully",
+			data: driver,
+		});
 	} catch (err) {
 		return res.status(500).json({ error: "Server error" });
 	}

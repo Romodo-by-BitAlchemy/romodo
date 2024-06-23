@@ -27,19 +27,15 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-
-
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
 app.use("/api/fleet", fleetRoutingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
-
-app.use('/', indexRouter);
+app.use("/", indexRouter);
 app.use("/api/v1/vehicle", vehicleRouter);
 app.use("/api/v1/driver", driverRoute);
 app.use("/api/v1/user", userRoute);
@@ -47,7 +43,7 @@ app.use("/api/v1/passenger", passengerRoute);
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
-  console.log(`[server]: Server is running at http://localhost:${process.env.PORT}`);
+	console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });
 
 module.exports = app;

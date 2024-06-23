@@ -1,7 +1,7 @@
-const tryCatch = require("../utils/TryCatch");
+const tryCatch = require("../utils/tryCatch");
 const { Request, Response } = require("express");
 const { StandardResponse } = require("../dto/StandardResponse");
-const { Passenger } = require("../types/SchemaTypes");
+const { Passenger } = require("../models/SchemaTypes");
 const PassengerModel = require("../models/Passenger");
 const sendEmail = require("../utils/sendEmail");
 
@@ -67,10 +67,8 @@ ROMODO`;
 	// Send email notification
 	await sendEmail(passenger.email, subject, text);
 
-	res
-		.status(200)
-		.send({
-			statusCode: 200,
-			msg: `Passenger ${isActive ? "reactivated" : "deactivated"}`,
-		});
+	res.status(200).send({
+		statusCode: 200,
+		msg: `Passenger ${isActive ? "reactivated" : "deactivated"}`,
+	});
 });
