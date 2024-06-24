@@ -1,5 +1,8 @@
 const { Router } = require("express");
-const { getAllPassengers, updatePassengerStatus } = require('../controller/passenger.controller');
+const {
+	getAllPassengers,
+	updatePassengerStatus,
+} = require("../controllers/passengerController");
 
 const router = Router();
 

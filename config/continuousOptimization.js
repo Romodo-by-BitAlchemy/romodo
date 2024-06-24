@@ -4,7 +4,7 @@ const winston = require("../utils/logger");
 
 class CFRResource {
 	constructor(projectId) {
-		this.projectId = projectId;
+		this.projectId = projectId || 390204966554;
 	}
 
 	generateAccessToken() {
