@@ -1,25 +1,23 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var bodyParser = require("body-parser");
-
-var loggerMorgan = require("morgan");
+require("dotenv").config();
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
+const loggerMorgan = require("morgan");
 const cors = require("cors");
+const indexRouter = require("./routes/index");
+const fleetRoutingRoutes = require("./routes/fleetRouting");
+const loggerWinston = require("./utils/logger");
+const vehicleRouter = require("./routes/vehicle");
+const driverRoute = require("./routes/driver");
+const userRoute = require("./routes/user");
+const passengerRoute = require("./routes/passenger");
+const errorHandler = require("./middlewares/ErrorHandler");
 
-var indexRouter = require("./routes/index");
-var fleetRoutingRoutes = require("./routes/fleetRouting");
-var loggerWinston = require("./utils/logger");
-
-var vehicleRouter = require("./routes/vehicle");
-var driverRoute = require("./routes/driver");
-var userRoute = require("./routes/user");
-var passengerRoute = require("./routes/passenger");
-var errorHandler = require("./middlewares/ErrorHandler");
-
-var app = express();
+const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({ origin: "*" }));
-
 app.use(loggerMorgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,22 +25,15 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use(express.json());
-app.use(cookieParser());
-
 app.use("/", indexRouter);
 app.use("/api/fleet", fleetRoutingRoutes);
-
-const PORT = process.env.PORT || 3000;
-
-app.use("/", indexRouter);
 app.use("/api/v1/vehicle", vehicleRouter);
 app.use("/api/v1/driver", driverRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/passenger", passengerRoute);
 app.use(errorHandler);
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
 	console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });
 
