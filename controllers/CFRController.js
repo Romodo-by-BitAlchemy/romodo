@@ -4,7 +4,7 @@ const {
 	extractWorkspaceId,
 	extractShipmentId,
 	extractVehicleId,
-} = require("./resourceMiddleware");
+} = require("../middlewares/CFRResourceMiddleware");
 
 const router = express.Router();
 
