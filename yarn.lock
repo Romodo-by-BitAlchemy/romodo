@@ -315,13 +315,6 @@
     enabled "2.0.x"
     kuler "^2.0.0"
 
-"@google-cloud/optimization@^3.5.0":
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/@google-cloud/optimization/-/optimization-3.5.0.tgz#a500c4f5d14f452129957a0295206a67b67c0ed8"
-  integrity sha512-brzAAIVv4YGsP03hUITcI3tu/qo+ahaWCh9ko4HxSUn3kLGa/VRfzKcI6rNYBXBPR6Tzx3fG70O8ZZ6Bauap6A==
-  dependencies:
-    google-gax "^4.0.3"
-
 "@googlemaps/routeoptimization@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@googlemaps/routeoptimization/-/routeoptimization-0.1.0.tgz#8147a69d77376543e60cd09d27c9e17c7a1d8b8a"
