@@ -3,253 +3,47 @@ const { execSync } = require("child_process");
 const winston = require("../utils/logger");
 
 class CFRResource {
-	constructor(projectName, projectId) {
-		this.projectId = projectId || 390204966554;
-		this.projectName = projectName || "romodo-fleets";
-		execSync(
-			"gcloud auth application-default login\ngcloud config set project ${this.projectName}\ngcloud auth application-default set-quota-project ${projectName}"
-		);
+	constructor(projectName = "romodo-fleets", projectId = 390204966554) {
+		this.projectId = projectId;
+		this.projectName = projectName;
+		// console.log(execSync("gcloud auth list").toString());
+		// execSync(
+		// 	`gcloud auth application-default login\ngcloud config set project ${this.projectName}\ngcloud auth application-default set-quota-project ${projectName}`
+		// );
 	}
 
 	generateAccessToken() {
 		return execSync("gcloud auth print-access-token").toString().trim();
 	}
 
-	async createWorkspace(workspaceDisplayName) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces`;
-		const headers = {
+	getHeaders() {
+		return {
 			Authorization: `Bearer ${this.generateAccessToken()}`,
 			"x-goog-user-project": this.projectId,
 			"Content-Type": "application/json; charset=utf-8",
 		};
+	}
 
+	async makeRequest(method, url, data, action) {
+		const headers = this.getHeaders();
+		try {
+			const response = await axios({ method, url, headers, data });
+			console.log(`${action} successful:`, response.data);
+			winston.info(`${action} successful:`, response.data);
+			return response.data;
+		} catch (error) {
+			this.handleError(error, action);
+		}
+	}
+
+	validateDisplayName(workspaceDisplayName) {
 		if (
 			typeof workspaceDisplayName !== "string" ||
 			workspaceDisplayName.trim() === ""
 		) {
-			console.error(
+			throw new Error(
 				"Invalid workspaceDisplayName. It must be a non-empty string."
 			);
-			return;
-		}
-
-		const body = {
-			displayName: workspaceDisplayName.trim(),
-		};
-
-		try {
-			const response = await axios.post(url, body, { headers });
-			console.log("Workspace created:", response.data);
-			winston.info("Workspace created:", JSON.stringify(response.data));
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "creating workspace");
-		}
-	}
-
-	async getWorkspace(workspaceId) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-		};
-
-		try {
-			const response = await axios.get(url, { headers });
-			console.log("Workspace details:", response.data);
-			winston.info("Workspace details:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "getting workspace");
-		}
-	}
-
-	async updateWorkspace(workspaceId, workspaceDisplayName) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-			"Content-Type": "application/json; charset=utf-8",
-		};
-
-		if (
-			typeof workspaceDisplayName !== "string" ||
-			workspaceDisplayName.trim() === ""
-		) {
-			console.error(
-				"Invalid workspaceDisplayName. It must be a non-empty string."
-			);
-			return;
-		}
-
-		const body = {
-			displayName: workspaceDisplayName.trim(),
-		};
-
-		try {
-			const response = await axios.patch(url, body, { headers });
-			console.log("Workspace updated:", response.data);
-			winston.info("Workspace updated:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "updating workspace");
-		}
-	}
-
-	async deleteWorkspace(workspaceId) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-		};
-
-		try {
-			const response = await axios.delete(url, { headers });
-			console.log("Workspace deleted:", response.data);
-			winston.info("Workspace deleted:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "deleting workspace");
-		}
-	}
-
-	async createShipment(workspaceId, shipmentData) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-			"Content-Type": "application/json; charset=utf-8",
-		};
-
-		try {
-			const response = await axios.post(url, shipmentData, { headers });
-			console.log("Shipment created:", response.data);
-			winston.info("Shipment created:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "creating shipment");
-		}
-	}
-
-	async getShipment(workspaceId, shipmentId) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments/${shipmentId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-		};
-
-		try {
-			const response = await axios.get(url, { headers });
-			console.log("Shipment details:", response.data);
-			winston.info("Shipment details:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "getting shipment");
-		}
-	}
-
-	async updateShipment(workspaceId, shipmentId, shipmentData) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments/${shipmentId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-			"Content-Type": "application/json; charset=utf-8",
-		};
-
-		try {
-			const response = await axios.patch(url, shipmentData, { headers });
-			console.log("Shipment updated:", response.data);
-			winston.info("Shipment updated:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "updating shipment");
-		}
-	}
-
-	async deleteShipment(workspaceId, shipmentId) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments/${shipmentId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-		};
-
-		try {
-			const response = await axios.delete(url, { headers });
-			console.log("Shipment deleted:", response.data);
-			winston.info("Shipment deleted:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "deleting shipment");
-		}
-	}
-
-	async createVehicle(workspaceId, vehicleData) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-			"Content-Type": "application/json; charset=utf-8",
-		};
-
-		try {
-			const response = await axios.post(url, vehicleData, { headers });
-			console.log("Vehicle created:", response.data);
-			winston.info("Vehicle created:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "creating vehicle");
-		}
-	}
-
-	async getVehicle(workspaceId, vehicleId) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles/${vehicleId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-		};
-
-		try {
-			const response = await axios.get(url, { headers });
-			console.log("Vehicle details:", response.data);
-			winston.info("Vehicle details:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "getting vehicle");
-		}
-	}
-
-	async updateVehicle(workspaceId, vehicleId, vehicleData) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles/${vehicleId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-			"Content-Type": "application/json; charset=utf-8",
-		};
-
-		try {
-			const response = await axios.patch(url, vehicleData, { headers });
-			console.log("Vehicle updated:", response.data);
-			winston.info("Vehicle updated:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "updating vehicle");
-		}
-	}
-
-	async deleteVehicle(workspaceId, vehicleId) {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles/${vehicleId}`;
-		const headers = {
-			Authorization: `Bearer ${this.generateAccessToken()}`,
-			"x-goog-user-project": this.projectId,
-		};
-
-		try {
-			const response = await axios.delete(url, { headers });
-			console.log("Vehicle deleted:", response.data);
-			winston.info("Vehicle deleted:", response.data);
-			return response.data;
-		} catch (error) {
-			this.handleError(error, "deleting vehicle");
 		}
 	}
 
@@ -264,6 +58,93 @@ class CFRResource {
 			console.error(`Error ${action}:`, error.message);
 			winston.error(`Error ${action}:`, error.message);
 		}
+	}
+
+	async createWorkspace(workspaceDisplayName) {
+		try {
+			this.validateDisplayName(workspaceDisplayName);
+			const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces`;
+			const body = { displayName: workspaceDisplayName.trim() };
+			return await this.makeRequest("post", url, body, "creating workspace");
+		} catch (error) {
+			console.error(error.message);
+		}
+	}
+
+	async getWorkspace() {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces`;
+		return await this.makeRequest("get", url, null, null);
+	}
+
+	async updateWorkspace(workspaceId, workspaceDisplayName) {
+		try {
+			this.validateDisplayName(workspaceDisplayName);
+			const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}`;
+			const body = { displayName: workspaceDisplayName.trim() };
+			return await this.makeRequest("patch", url, body, "updating workspace");
+		} catch (error) {
+			console.error(error.message);
+		}
+	}
+
+	async deleteWorkspace(workspaceId) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}`;
+		return await this.makeRequest("delete", url, null, "deleting workspace");
+	}
+
+	async createShipment(workspaceId, shipmentData) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments`;
+		return await this.makeRequest(
+			"post",
+			url,
+			shipmentData,
+			"creating shipment"
+		);
+	}
+
+	async getShipment(workspaceId, shipmentId) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments/${shipmentId}`;
+		return await this.makeRequest("get", url, null, "getting shipment");
+	}
+
+	async updateShipment(workspaceId, shipmentId, shipmentData) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments/${shipmentId}`;
+		return await this.makeRequest(
+			"patch",
+			url,
+			shipmentData,
+			"updating shipment"
+		);
+	}
+
+	async deleteShipment(workspaceId, shipmentId) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/shipments/${shipmentId}`;
+		return await this.makeRequest("delete", url, null, "deleting shipment");
+	}
+
+	async createVehicle(workspaceId, vehicleData) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles`;
+		return await this.makeRequest("post", url, vehicleData, "creating vehicle");
+	}
+
+	async getVehicle(workspaceId, vehicleId) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles/${vehicleId}`;
+		return await this.makeRequest("get", url, null, "getting vehicle");
+	}
+
+	async updateVehicle(workspaceId, vehicleId, vehicleData) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles/${vehicleId}`;
+		return await this.makeRequest(
+			"patch",
+			url,
+			vehicleData,
+			"updating vehicle"
+		);
+	}
+
+	async deleteVehicle(workspaceId, vehicleId) {
+		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces/${workspaceId}/vehicles/${vehicleId}`;
+		return await this.makeRequest("delete", url, null, "deleting vehicle");
 	}
 }
 

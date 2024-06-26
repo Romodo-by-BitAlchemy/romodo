@@ -12,6 +12,8 @@ const { CFRResource } = require("./continuousOptimization");
 
 		console.log("Workspace ID:", workspaceId);
 
+		console.log("Workspace Name:", resourceManager.getWorkspace());
+
 		// Create a shipment using the workspace ID
 		const shipmentData = {
 			displayName: "shipment-1",
@@ -25,6 +27,11 @@ const { CFRResource } = require("./continuousOptimization");
 			// Add other necessary vehicle details
 		};
 		await resourceManager.createVehicle(workspaceId, vehicleData);
+
+		// await resourceManager.updateShipment(workspaceId, "shipment-1", {
+		// 	displayName: "updated-shipment-1",
+		// });
+		await resourceManager.deleteWorkspace(workspaceId);
 	} catch (error) {
 		console.error("An error occurred:", error);
 	}
