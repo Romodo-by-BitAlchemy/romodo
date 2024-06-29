@@ -1,5 +1,5 @@
 const { CFRResource } = require("../config/continuousOptimization");
-var logger = require("utils/logger");
+var logger = require("../utils/logger");
 
 const setUpResourceManager = (req, _res, next) => {
 	const { projectId } = req.params;

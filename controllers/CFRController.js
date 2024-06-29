@@ -22,20 +22,16 @@ router.post("/workspace", setUpResourceManager, async (req, res) => {
 });
 
 // Get workspace details
-router.get(
-	"/workspace/:projectId/:workspaceId",
-	[setUpResourceManager, extractWorkspaceId],
-	async (req, res) => {
-		try {
-			const workspaceData = await req.resourceManager.getWorkspace(
-				req.workspaceId
-			);
-			res.status(200).json(workspaceData);
-		} catch (error) {
-			res.status(500).json({ error: "Error getting workspace" });
-		}
+router.get("/workspace", setUpResourceManager, async (req, res) => {
+	try {
+		const workspaceData = await req.resourceManager.getWorkspace(
+			req.workspaceId
+		);
+		res.status(200).json(workspaceData);
+	} catch (error) {
+		res.status(500).json({ error: "Error getting workspace" });
 	}
-);
+});
 
 // Update workspace
 router.patch(

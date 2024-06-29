@@ -72,8 +72,12 @@ class CFRResource {
 	}
 
 	async getWorkspace() {
-		const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces`;
-		return await this.makeRequest("get", url, null, null);
+		try {
+			const url = `https://cloudoptimization.googleapis.com/v1/projects/${this.projectId}/locations/us-central1/workspaces`;
+			return await this.makeRequest("get", url, null, null);
+		} catch (error) {
+			console.error(error.message);
+		}
 	}
 
 	async updateWorkspace(workspaceId, workspaceDisplayName) {
