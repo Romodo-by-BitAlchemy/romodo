@@ -6,6 +6,9 @@ class CFRResource {
 	constructor(projectName = "romodo-fleets", projectId = 390204966554) {
 		this.projectId = projectId;
 		this.projectName = projectName;
+
+		//// Uncomment this in case of gcloud authentication issues
+
 		// console.log(execSync("gcloud auth list").toString());
 		// execSync(
 		// 	`gcloud auth application-default login\ngcloud config set project ${this.projectName}\ngcloud auth application-default set-quota-project ${projectName}`

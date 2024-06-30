@@ -1,5 +1,5 @@
 const readline = require("readline");
-const { CFRResource } = require("./continuousOptimization");
+const { CFRResource } = require("../config/continuousOptimization");
 const { run } = require("jest");
 
 const rl = readline.createInterface({
