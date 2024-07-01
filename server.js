@@ -7,6 +7,11 @@ import vehicleRoutes from "./Routes/vehicleDashboardRoutes.js";
 import driverRoutes from "./Routes/driverDashboardRoutes.js";
 import tripRoutes from "./Routes/tripDashboardRoutes.js";
 import issueRoutes from "./Routes/issueDashboardRoutes.js";
+import passengerReportRoutes from './Routes/passengerReportRoutes.js';
+import driverReportRoutes from './Routes/driverReportRoutes.js';
+import vehicleReportRoutes from './Routes/vehicleReportRoutes.js';
+import issueReportRoutes from './Routes/issueReportRoutes.js';
+
 
 // Load environment variables from .env file
 dotenv.config();
@@ -25,6 +30,12 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/trips", tripRoutes);
 app.use("/api/issues", issueRoutes);
+app.use('/api/passengers', passengerReportRoutes);
+app.use('/api/drivers', driverReportRoutes);
+app.use('/api/vehicles', vehicleReportRoutes);
+app.use('/api/issues', issueReportRoutes);
+
+
 
 // Error Handling Middleware
 app.use(errorHandler);
