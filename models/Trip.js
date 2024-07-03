@@ -1,35 +1,24 @@
-// const mongoose = require("mongoose");
 
-// // Defining Trips schema
-// const TripSchema = new mongoose.Schema({
-// 	driverId: { type: mongoose.Schema.Types.ObjectId, ref: "Driver" },
-// 	vehicleId: { type: mongoose.Schema.Types.ObjectId, ref: "Vehicle" },
-// 	destinationLocation: {
-// 		type: mongoose.Schema.Types.ObjectId,
-// 		required: true,
-// 		ref: "Destination",
-// 	},
-// 	date: { type: Date, required: true },
-// 	startTime: { type: Date, required: true },
-// 	endTime: { type: Date },
-// });
-
-// const Trip = mongoose.model("Trip", TripSchema);
-// module.exports = Trip;
 
 //Models/Trip.js
-import mongoose from 'mongoose';
+import { Schema, model } from "mongoose";
 
-const tripSchema = new mongoose.Schema({
- 
-    status: {
-        type: Boolean,
-        default: true // Default to scheduled (true)
-    }
-});
+const TripSchema = new Schema({
+  driverId: { type: Schema.Types.ObjectId, ref: "Driver" },
+  vehicleId: { type: Schema.Types.ObjectId, ref: "Vehicle" },
+  status: { type: Boolean, default: true }, // Default to scheduled (true)
+  destinationLocation: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: "Destination",
+  },
+  date: { type: Date, required: true }, // This date indicates the trip scheduled date.
+  startTime: { type: Date, required: function() { return this.status; } }, // Required for scheduled trips
+  endTime: { type: Date, required: function() { return this.status; } }, // Required for completed trips
+}, { timestamps: true });
 
-const Trip = mongoose.model('Trip', tripSchema);
-
+const Trip = model("Trip", TripSchema);
 export default Trip;
+
 
 
