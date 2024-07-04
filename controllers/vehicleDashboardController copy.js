@@ -1,9 +1,7 @@
-// Controllers/vehicleController.js
+const asyncHandler = require('express-async-handler');
+const Vehicle = require('../Models/Vehicle');
 
-import asyncHandler from 'express-async-handler';
-import Vehicle from '../Models/Vehicle.js';
-
-export const getVehicles = asyncHandler(async (req, res) => {
+const getVehicles = asyncHandler(async (req, res) => {
   try {
     const totalVehicles = await Vehicle.countDocuments();
     const inServiceVehicles = await Vehicle.countDocuments({ availability: true });
@@ -22,3 +20,5 @@ export const getVehicles = asyncHandler(async (req, res) => {
     res.status(500).json({ error: `Failed to fetch vehicle counts: ${error.message}` });
   }
 });
+
+module.exports = { getVehicles };

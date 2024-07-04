@@ -1,9 +1,7 @@
-// Controllers/tripController.js
+const asyncHandler = require('express-async-handler');
+const Trip = require('../Models/Trip');
 
-import asyncHandler from 'express-async-handler';
-import Trip from '../Models/Trip.js';
-
-export const getTripCounts = asyncHandler(async (req, res) => {
+const getTripCounts = asyncHandler(async (req, res) => {
   try {
     const totalTrips = await Trip.countDocuments();
     const cancelledTrips = await Trip.countDocuments({ status: false });
@@ -22,3 +20,5 @@ export const getTripCounts = asyncHandler(async (req, res) => {
     res.status(500).json({ error: `Failed to fetch trip counts: ${error.message}` });
   }
 });
+
+module.exports = { getTripCounts };

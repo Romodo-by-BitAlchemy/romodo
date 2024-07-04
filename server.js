@@ -1,18 +1,17 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import connectDB from "./Config/db.js";
-import errorHandler from "./Middlewares/errorMiddlewares.js";
-import vehicleRoutes from "./Routes/vehicleDashboardRoutes.js";
-import driverRoutes from "./Routes/driverDashboardRoutes.js";
-import tripRoutes from "./Routes/tripDashboardRoutes.js";
-import issueRoutes from "./Routes/issueDashboardRoutes.js";
-import countCompletedTripsRoute from './Routes/countCompletedTripsRoute.js';
-import passengerRouteReport from "./Routes/passengerReportRoutes.js";
-import driverRouteReport from './Routes/driverReportRoutes.js';
-import vehicleRouteReport from './Routes/vehicleReportRoutes.js';
-import issueRouteReport from './Routes/issueReportRoutes.js';
-
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const connectDB = require("./Config/db");
+const errorHandler = require("./Middlewares/errorMiddlewares");
+const vehicleRoutes = require("./Routes/vehicleDashboardRoutes");
+const driverRoutes = require("./Routes/driverDashboardRoutes");
+const tripRoutes = require("./Routes/tripDashboardRoutes");
+const issueRoutes = require("./Routes/issueDashboardRoutes");
+const countCompletedTripsRoute = require('./Routes/countCompletedTripsRoute');
+const passengerRouteReport = require("./Routes/passengerReportRoutes");
+const driverRouteReport = require('./Routes/driverReportRoutes');
+const vehicleRouteReport = require('./Routes/vehicleReportRoutes');
+const issueRouteReport = require('./Routes/issueReportRoutes');
 
 // Load environment variables from .env file
 dotenv.config();
@@ -36,7 +35,6 @@ app.use('/api/passengers', passengerRouteReport);
 app.use('/api/drivers', driverRouteReport);
 app.use('/api/vehicles', vehicleRouteReport);
 app.use('/api/issues', issueRouteReport);
-
 
 // Error Handling Middleware
 app.use(errorHandler);

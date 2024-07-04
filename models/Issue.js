@@ -1,20 +1,4 @@
-// const mongoose = require("mongoose");
-
-// const IssuesSchema = new mongoose.Schema({
-// 	dateOccurred: Date,
-// 	typeDescriptions: String,
-// 	locations: String,
-// 	cause: String,
-// 	repairCost: Number,
-// 	repairDate: Date,
-// 	affectedComponents: [String],
-// });
-
-// const Trip = mongoose.model("Trip", TripSchema);
-// module.exports = Trip;
-
-// //Models/Issue.js
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const issueSchema = new Schema({
@@ -39,12 +23,8 @@ const issueSchema = new Schema({
     type: String,
     required: false
   },
-  reroutingNewDriverNo: {
-    type: String,
-    required: false
-  }
 }, { timestamps: true });
 
-const Issue = mongoose.model("Issue", issueSchema);
+const Issue = mongoose.model('Issue', issueSchema);
 
-export default Issue;
+module.exports = Issue;

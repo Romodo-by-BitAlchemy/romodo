@@ -14,76 +14,71 @@
  * @property {boolean} isInternal - Indicates if the passenger is internal.
  * @property {string} companyName - The company name of the passenger (required if isInternal is true).
  */
-import { model, Schema } from "mongoose";
+const { model, Schema } = require('mongoose');
 
 const passengerSchema = new Schema({
-	email: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	username: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	password: {
-		type: String,
-		required: true,
-	},
-
-	firstName: {
-		type: String,
-		required: true,
-	},
-
-	lastName: {
-		type: String,
-		required: true,
-	},
-
-	nicNo: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-
-	gender: {
-		type: String,
-		required: true,
-		enum: ["Male", "Female", "Other"],
-	},
-
-	isInternal: {
-		type: Boolean,
-		default: false, // Assuming default is external passenger
-	},
-	companyName: {
-		type: String,
-		required: function () {
-			return this.isInternal;
-		},
-	},
-	serviceNo: {
-		type: String,
-		required: function () {
-			return this.isInternal;
-		},
-	},
-	contactNo: {
-		type: String,
-		required: true,
-	},
-	birthday: {
-		type: Date,
-		required: true,
-	},
-	isActive: {
-		type: Boolean,
-		default: true,
-	},
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
+    type: String,
+    required: true,
+  },
+  nicNo: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+    enum: ['Male', 'Female', 'Other'],
+  },
+  isInternal: {
+    type: Boolean,
+    default: false, // Assuming default is external passenger
+  },
+  companyName: {
+    type: String,
+    required: function () {
+      return this.isInternal;
+    },
+  },
+  serviceNo: {
+    type: String,
+    required: function () {
+      return this.isInternal;
+    },
+  },
+  contactNo: {
+    type: String,
+    required: true,
+  },
+  birthday: {
+    type: Date,
+    required: true,
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
 }, { timestamps: true });
 
-const PassengerModel = model("Passenger", passengerSchema);
+const PassengerModel = model('Passenger', passengerSchema);
 
-export default PassengerModel;
+module.exports = PassengerModel;
