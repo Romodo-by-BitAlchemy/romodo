@@ -26,6 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/api/fleet", fleetRoutingRoutes);
+app.use('/api/issues', issueRoutes);
 
 const PORT = process.env.PORT || 3000;
 
