@@ -32,6 +32,7 @@ exports.createDriver = tryCatch(async (req, res) => {
 
 	driver.username = username;
 	driver.password = hashedPassword;
+	driver.available = true;
 
 	const driverModel = new DriverModel(driver);
 	const savedDriver = await driverModel.save();

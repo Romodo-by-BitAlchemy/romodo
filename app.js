@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Import routes
 const indexRouter = require("./routes/index");
-const fleetRoutingRoutes = require("./routes/fleetRouting");
+// const fleetRoutingRoutes = require("./routes/fleetRouting");
 const vehicleRoute = require("./routes/vehicle");
 const driverRoute = require("./routes/driver");
 const userRoute = require("./routes/user");
@@ -44,7 +44,7 @@ const issueRouteReport = require('./routes/issueReportRoutes');
 
 // Routes
 app.use("/", indexRouter);
-app.use("/api/fleet", fleetRoutingRoutes);
+// app.use("/api/fleet", fleetRoutingRoutes);
 app.use("/api/v1/vehicle", vehicleRoute);
 app.use("/api/v1/driver", driverRoute);
 app.use("/api/v1/user", userRoute);
