@@ -1,10 +1,27 @@
+// models/Vehicle.js
+
 const { model, Schema } = require("mongoose");
 const CounterModel = require('./Counter');
 
+/**
+ * Represents the schema for the Vehicle model.
+ *
+ * @typedef {Object} VehicleSchema
+ * @property {string} id - The unique identifier for the vehicle.
+ * @property {string} no - The vehicle number.
+ * @property {string} type - The type of the vehicle.
+ * @property {string} chassisNo - The chassis number of the vehicle.
+ * @property {Date} productionYear - The production year of the vehicle.
+ * @property {boolean} ac - Whether the vehicle has air conditioning.
+ * @property {string} brand - The brand of the vehicle.
+ * @property {boolean} availability - The availability status of the vehicle.
+ * @property {string} fuelType - The fuel type of the vehicle.
+ * @property {number} noOfSeats - The number of seats in the vehicle.
+ */
+
 const vehicleSchema = new Schema({
-    id : {
+    id: {
         type: String,
-       
         unique: true
     },
     no: {
