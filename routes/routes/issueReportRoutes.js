@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { fetchIssues } = require('../Controllers/issuesReportController');
+const { fetchIssues } = require('../controller/issues.report.controller');
 
 router.route('/').get(fetchIssues);
 

@@ -1,5 +1,5 @@
 const express = require('express');
-const { fetchVehicles } = require('../Controllers/vehicleReportController');
+const { fetchVehicles } = require('../controller/vehicle.report.controller');
 
 const router = express.Router();
 
