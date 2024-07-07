@@ -1,51 +1,81 @@
-const { model, Schema } = require('mongoose');
+// models/Vehicle.js
 
+const { model, Schema } = require("mongoose");
+const CounterModel = require('./Counter');
+
+/**
+ * Represents the schema for the Vehicle model.
+ *
+ * @typedef {Object} VehicleSchema
+ * @property {string} id - The unique identifier for the vehicle.
+ * @property {string} no - The vehicle number.
+ * @property {string} type - The type of the vehicle.
+ * @property {string} chassisNo - The chassis number of the vehicle.
+ * @property {Date} productionYear - The production year of the vehicle.
+ * @property {boolean} ac - Whether the vehicle has air conditioning.
+ * @property {string} brand - The brand of the vehicle.
+ * @property {boolean} availability - The availability status of the vehicle.
+ * @property {string} fuelType - The fuel type of the vehicle.
+ * @property {number} noOfSeats - The number of seats in the vehicle.
+ */
 
 const vehicleSchema = new Schema({
-  id: {
-    type: String,
-    unique: true
-  },
-  no: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  type: {
-    type: String,
-    required: true
-  },
-  chassisNo: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  productionYear: {
-    type: Date,
-    required: true
-  },
-  ac: {
-    type: Boolean,
-    default: false
-  },
-  brand: {
-    type: String,
-    required: true
-  },
-  availability: {
-    type: Boolean,
-    default: true
-  },
-  fuelType: {
-    type: String,
-    required: true
-  },
-  noOfSeats: {
-    type: Number,
-    required: true
-  }
+    id: {
+        type: String,
+        unique: true
+    },
+    no: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
+    chassisNo: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    productionYear: {
+        type: Date,
+        required: true
+    },
+    ac: {
+        type: Boolean,
+        default: false
+    },
+    brand: {
+        type: String,
+        required: true
+    },
+    availability: {
+        type: Boolean,
+        default: true
+    },
+    fuelType: {
+        type: String,
+        required: true
+    },
+    noOfSeats: {
+        type: Number,
+        required: true
+    }
 }, { timestamps: true });
 
-const VehicleModel = model('Vehicle', vehicleSchema);
+vehicleSchema.pre('save', async function (next) {
+    if (this.isNew) {
+        const counter = await CounterModel.findByIdAndUpdate(
+            { _id: 'vehicleId' },
+            { $inc: { seq: 1 } },
+            { new: true, upsert: true }
+        );
+        this.id = `V${counter.seq.toString().padStart(3, '0')}`;
+    }
+    next();
+});
+
+const VehicleModel = model("Vehicle", vehicleSchema);
 
 module.exports = VehicleModel;

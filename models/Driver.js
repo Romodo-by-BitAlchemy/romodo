@@ -1,34 +1,9 @@
-// const mongoose = require("mongoose");
-
-// const DriverSchema = new mongoose.Schema({
-// 	firstName: String,
-// 	lastName: String,
-// 	nicNo: String,
-// 	gender: String,
-// 	dateOfBirth: Date,
-// 	contactNo: String,
-// 	email: String,
-// 	licenseNo: String,
-// 	expiryDate: Date,
-// 	medicalIssues: String,
-// });
-
-// const Driver = mongoose.model("Driver", DriverSchema);
-// module.exports = Driver;
-
-// Models/Driver.js
 const mongoose = require('mongoose');
+const CounterModel = require("./Counter");
 
 const driverSchema = new mongoose.Schema({
-  // id: {
-  //     type: String,
-  //     //required: false,
-  //     unique: true,
-  // },
-
   no: {
     type: String,
-    //required: false,
     unique: true,
   },
   date: {
@@ -86,15 +61,26 @@ const driverSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  password: {
+    type: String,
+    required: true,
+  },
   availability: {
     type: Boolean,
     required: true,
   },
-}, { timestamps: true }
-);
+}, { timestamps: true });
 
-// other fields as needed
-// timestamps: true adds createdAt and updatedAt fields
+driverSchema.pre("save", async function (next) {
+  const driver = this;
+  const counter = await CounterModel.findByIdAndUpdate(
+    { _id: "driverNo" },
+    { $inc: { seq: 1 } },
+    { new: true, upsert: true }
+  );
+  driver.no = `D${counter.seq.toString().padStart(3, "0")}`;
+  next();
+});
 
 const Driver = mongoose.model('Driver', driverSchema);
 
