@@ -1,6 +1,6 @@
-import { LatLng } from "./LatLng";
+const { LatLng } = require("./LatLng");
 
-export const Location = {
+const Location = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	title: "Location",
 	type: "object",
@@ -14,3 +14,5 @@ export const Location = {
 	},
 	required: ["lat_lng"],
 };
+
+module.exports = Location;

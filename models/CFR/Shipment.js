@@ -1,6 +1,6 @@
-import { Location } from "./Location.js";
+const { Location } = require("./Location");
 
-export const Shipment = {
+const Shipment = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	title: "Shipment",
 	type: "object",
@@ -42,3 +42,5 @@ export const Shipment = {
 		"delivery_time",
 	],
 };
+
+module.exports = { Shipment };

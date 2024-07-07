@@ -1,4 +1,4 @@
-export const LatLng = {
+const LatLng = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	title: "LatLng",
 	type: "object",
@@ -14,3 +14,5 @@ export const LatLng = {
 	},
 	required: ["latitude", "longitude"],
 };
+
+module.exports = LatLng;

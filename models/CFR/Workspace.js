@@ -1,4 +1,4 @@
-export const Workspace = {
+const Workspace = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	title: "Workspace",
 	type: "object",
@@ -18,3 +18,5 @@ export const Workspace = {
 	},
 	required: ["id", "name"],
 };
+
+module.exports = Workspace;

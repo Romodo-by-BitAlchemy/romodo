@@ -1,4 +1,4 @@
-export const Optimizer = {
+const Optimizer = {
 	$schema: "http://json-schema.org/draft-07/schema#",
 	title: "Optimizer",
 	type: "object",
@@ -14,3 +14,5 @@ export const Optimizer = {
 	},
 	required: ["name"],
 };
+
+module.exports = Optimizer;
