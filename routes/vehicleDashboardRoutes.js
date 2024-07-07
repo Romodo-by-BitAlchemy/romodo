@@ -1,10 +1,7 @@
-//Routes/vehicleRoutes.js
-import express from 'express';
+const express = require('express');
 const router = express.Router();
-import { getVehicles } from '../Controllers/vehicleDashboardController.js'; // Import as named export
+const { getVehicles } = require('../controllers/vehicleDashboardController'); // Import as named export
 
 router.get('/counts', getVehicles); // Use getVehicles directly
 
-export default router;
-
-
+module.exports = router;

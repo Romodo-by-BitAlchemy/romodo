@@ -1,9 +1,7 @@
-// Routes/issueRoutes.js
-
-import express from 'express';
+const express = require('express');
 const router = express.Router();
-import { getIssuesComparison } from '../Controllers/issueDashboardController.js'; // Correct path and import
+const { getIssuesComparison } = require('../controllers/issueDashboardController'); // Correct path and import
 
 router.get('/counts', getIssuesComparison); // Route for fetching issue counts
 
-export default router;
+module.exports = router;

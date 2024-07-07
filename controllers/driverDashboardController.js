@@ -1,24 +1,23 @@
-//Controllers/driverController.js
+const asyncHandler = require('express-async-handler');
+const Driver = require('../models/Driver');
 
-import asyncHandler from 'express-async-handler';
-import Driver from '../Models/Driver.js';
-
+// Function to get driver counts
 const getDriverCounts = asyncHandler(async (req, res) => {
   try {
-    const noOfTotalDrivers = await Driver.countDocuments();
-    const noOfAvailableDrivers = await Driver.countDocuments({ availability: true });
-    const noOfUnavailableDrivers = noOfTotalDrivers - noOfAvailableDrivers;
+    const totalDrivers = await Driver.countDocuments();
+    const availableDrivers = await Driver.countDocuments({ availability: true });
+    const unavailableDrivers = totalDrivers - availableDrivers;
 
-    const counts = {
-      noOfTotalDrivers,
-      noOfAvailableDrivers,
-      noOfUnavailableDrivers
+    const driverCounts = {
+      total: totalDrivers,
+      available: availableDrivers,
+      unavailable: unavailableDrivers,
     };
 
-    res.json(counts);
+    res.status(200).json({ drivers: driverCounts });
   } catch (error) {
-    res.status(500).json({ error: `An error occurred while fetching driver counts: ${error.message}` });
+    res.status(500).json({ error: `Failed to fetch driver counts: ${error.message}` });
   }
 });
 
-export default getDriverCounts;
+module.exports = getDriverCounts;

@@ -1,5 +1,5 @@
 const express = require('express');
-const { fetchDrivers } = require('../Controllers/driverReportController');
+const { fetchDrivers } = require('../controllers/driverReportController');
 
 const router = express.Router();
 

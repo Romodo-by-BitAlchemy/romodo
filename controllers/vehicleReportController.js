@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Vehicle = require('../Models/Vehicle');
+const Vehicle = require('../models/Vehicle');
 
 // Function to fetch vehicles
 const fetchVehicles = asyncHandler(async (req, res) => {

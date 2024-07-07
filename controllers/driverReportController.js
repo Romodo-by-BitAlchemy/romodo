@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler');
-const Driver = require('../Models/Driver');
+const Driver = require('../models/Driver');
 
 // Function to fetch drivers
 const fetchDrivers = asyncHandler(async (req, res) => {

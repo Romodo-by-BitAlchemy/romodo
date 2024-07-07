@@ -1,9 +1,7 @@
-// Routes/tripRoutes.js
-
-import express from 'express';
+const express = require('express');
 const router = express.Router();
-import { getTripCounts } from '../Controllers/tripDashboardController.js'; // Correct path and import
+const { getTripCounts } = require('../controllers/tripDashboardController'); // Correct path and import
 
 router.get('/counts', getTripCounts); // Route for fetching trip counts
 
-export default router;
+module.exports = router;

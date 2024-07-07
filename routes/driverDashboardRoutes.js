@@ -1,9 +1,7 @@
-//Routes/driverRoutes.js
-import express from 'express';
+const express = require('express');
 const router = express.Router();
-import getDriverCounts from '../Controllers/driverDashboardController.js'; // Correct path and import
+const getDriverCounts = require('../controllers/driverDashboardController'); // Correct path and import
 
 router.get('/counts', getDriverCounts);
 
-export default router;
-
+module.exports = router;
