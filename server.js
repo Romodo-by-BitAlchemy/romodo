@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const connectDB = require("./Config/db");
+const connectDB = require("./Config/database");
 const errorHandler = require("./Middlewares/errorMiddlewares");
 const vehicleRoutes = require("./Routes/vehicleDashboardRoutes");
 const driverRoutes = require("./Routes/driverDashboardRoutes");
@@ -50,7 +50,6 @@ mongoose
   .then(() => console.log("Connected to db"))
   .catch((er) => console.log(er));
 
-const app = express();
 app.use(cors());
 /*app.use(cors(
  /*{
