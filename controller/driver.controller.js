@@ -5,14 +5,37 @@ const { Driver } = require("../models/SchemaTypes");
 const DriverModel = require("../models/Driver");
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+//const jwt = require('jsonwebtoken');
+//const nodemailer = require('nodemailer');
 const validator = require('validator');
 const sendEmail = require("../utils/sendEmail");
 
 function generatePassword(length) {
-    return crypto.randomBytes(length).toString('hex').slice(0, length);
-}
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = '0123456789';
+    const specialChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+    const allChars = uppercase + lowercase + numbers + specialChars;
+    
+    let password = '';
+    
+    // Ensure the password includes at least one character from each category
+    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+    password += numbers[Math.floor(Math.random() * numbers.length)];
+    password += specialChars[Math.floor(Math.random() * specialChars.length)];
+    
+    // Fill the remaining length with random characters from all categories
+    for (let i = 4; i < length; i++) {
+      const randomChar = allChars[Math.floor(Math.random() * allChars.length)];
+      password += randomChar;
+    }
+    
+    // Shuffle the password to ensure randomness
+    password = password.split('').sort(() => 0.5 - Math.random()).join('');
+    
+    return password;
+  }
 
 function generateUsername(name) {
     return name.toLowerCase().replace(/\s/g, '') + Math.floor(Math.random() * 1000);
@@ -100,7 +123,9 @@ exports.updateDriver = tryCatch(async (req, res) => {
     if (req.body.licenseNo) updateFields.licenseNo = req.body.licenseNo;
     if (req.body.licenseExpireDate) updateFields.licenseExpireDate = new Date(req.body.licenseExpireDate);
     if (req.body.medicalIssues) updateFields.medicalIssues = req.body.medicalIssues;
-
+    if (req.body.availability !== undefined) updateFields.availability = req.body.availability;
+    if (req.body.isActive !== undefined) updateFields.isActive = req.body.isActive;
+    
     try {
         const driver = await DriverModel.findOneAndUpdate(
             { _id: driverId },
@@ -142,8 +167,30 @@ exports.deleteDriver = tryCatch(async (req, res) => {
     res.status(204).send();
 });
 
+exports.toggleDriverStatus = tryCatch(async (req, res) => {
+    const driverId = req.params.id;
+    const driver = await DriverModel.findOne({ _id: driverId });
+
+    if (!driver) {
+        return res.status(404).json({ error: 'Driver not found' });
+    }
+
+    driver.isActive = !driver.isActive;
+
+    const updatedDriver = await driver.save();
+
+    // Send email to notify the driver about the status change
+    await sendEmail(driver.email, 'Account Status Change', `Your account status has been changed to ${driver.isActive ? 'Active' : 'Inactive'}.`);
+
+    res.status(200).json({ status: true, message: `Driver ${driver.isActive ? 'activated' : 'deactivated'} successfully`, data: updatedDriver });
+});
 
 
+
+
+/**
+ * Driver Mobile app Functions
+ */
 exports.login = tryCatch(async (req, res) => {
   const { username, password } = req.body;
 

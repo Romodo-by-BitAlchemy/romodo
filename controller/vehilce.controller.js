@@ -30,14 +30,16 @@ exports.getAllVehicles = tryCatch(async (req, res) => {
 exports.getVehicle = tryCatch(async (req, res) => {
     const vehicle = await VehicleModel.findOne({ id: req.params.id });
     if (!vehicle) {
-        const errorResponse = { statusCode: 400, msg: `${req.params.id} vacancy not found!` };
+        const errorResponse = { statusCode: 400, msg: `${req.params.id} vehicle not found!` };
         return res.status(404).send(errorResponse);
     }
     const response = { statusCode: 200, msg: "OK", data: vehicle };
     res.status(200).send(response);
 });
 
-
+/**
+ * Update a vehicle
+ */
 
 exports.updateVehicle = tryCatch(async (req, res) => {
     const vehicleId = req.params.id;

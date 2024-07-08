@@ -137,7 +137,18 @@ function Driver() {
      */
     this.medicalIssues = "";
 
-    
+    /**
+          * Indicates whether the passenger is active
+          * @type {boolean}
+          */
+    this.isActive = true;
+
+    /**
+     * Indicates whether the driver is available
+     * @type {boolean}
+     */
+    this.isAvailable = true;
+
         
 }
 

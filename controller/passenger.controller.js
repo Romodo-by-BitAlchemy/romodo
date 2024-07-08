@@ -46,7 +46,7 @@ ROMODO`;
 });
 
 
-
+/** Passenger mobile app */
 
 exports.signup = tryCatch(async (req, res) => {
   const { firstName , lastName ,nicNo, username, email, password , gender, isInternal,companyName,serviceNo, contactNo, birthday } = req.body;

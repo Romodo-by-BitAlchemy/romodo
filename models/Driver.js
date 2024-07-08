@@ -70,6 +70,14 @@ const driverSchema = new Schema({
         type: String,
         required: true
     },
+    availability: {
+        type: Boolean,
+        default: true,
+    },
+    isActive: {
+    type: Boolean,
+    default: true,
+  },
     
 }, { timestamps: true });
 
