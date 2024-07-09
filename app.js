@@ -11,6 +11,29 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var fleetRoutingRoutes = require("./routes/fleetRouting");
 
+const WebSocket = require("ws");
+const http = require("http");
+const { notifyPassengers, handleNotification } = require("./services/notificationService");
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
+const users = {}
+
+
+
+wss.on("connection", (ws, req) => {
+	const userId = req.url.split("/").pop(); 
+	users[userId] = ws;
+  
+	ws.on("message", (message) => {
+	  console.log(`Received message: ${message} from user: ${userId}`);
+	});
+  
+	ws.on("close", () => {
+	  delete users[userId];
+	});
+  });
+
+
 
 var app = express();
 
