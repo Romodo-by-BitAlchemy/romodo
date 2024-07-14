@@ -1,12 +1,12 @@
 const asyncHandler = require('express-async-handler');
-const Issue = require('../models/Issue');
+const Issue = require('../model/Issue');
 
 const getIssuesComparison = asyncHandler(async (req, res) => {
   try {
     const issues = await Issue.aggregate([
       {
         $group: {
-          _id: { year: { $year: "$createdAt" }, type: "$nameOfTheIssues" },
+          _id: { year: { $year: "$createdAt" }, type: "$incidentType" },
           count: { $sum: 1 }
         }
       },
@@ -28,9 +28,9 @@ const getIssuesComparison = asyncHandler(async (req, res) => {
       };
 
       issue.data.forEach(({ type, count }) => {
-        if (type === 'accident') {
+        if (type === 'Accident') {
           formattedIssue.accidents += count;
-        } else if (type === 'malfunction') {
+        } else if (type === 'Malfunction') {
           formattedIssue.malfunctions += count;
         }
       });
